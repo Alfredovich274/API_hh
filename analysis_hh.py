@@ -7,6 +7,11 @@ import pandas as pd
 
 
 def treatment_str(data):
+    """
+    Убираем ненужные символы в строковых данных.
+    :param data: Строка.
+    :return: Строка.
+    """
     deleted_words = ['<p>', '<strong>', '</p>', '</strong>', '<ul>', '<li>',
                      '</li>', '</ul>', '<highlighttext>', '</highlighttext>',
                      '\r', '\r\n', '<br />', '</ol>', '<ol>']
@@ -17,10 +22,25 @@ def treatment_str(data):
 
 
 def calcul_salary(data):
+    """
+    Проверка наличия данных и выбор величины предлагаемой зарплаты.
+    :param data: данные по зарплате со страницы вакансии - вакансия['salary'].
+    :return: int, величина зарплаты в валюте указанной в вакансии.
+    """
     return data['from'] if data['from'] and data['from'] > 0 else data['to']
 
 
 def salary_to_info(data_one, counter_salary, avg_salary):
+    """
+    Готовим данные для отчета по зарплате.
+    :param data_one: Не полное описание вакансии,
+    полученное со страницы с вакансиями.
+    :param counter_salary: Счетчик вакансий,
+    где указаны предложения по зарплате.
+    :param avg_salary: Список предложений
+    по зарплате всех рассмотренных вакансий.
+    :return: Возвращаем счетчик (int) и список зарплат (list).
+    """
     data_salary = data_one['salary']
     if data_salary:
         if data_salary['currency'] and data_salary['currency'] == 'RUR':
@@ -33,6 +53,15 @@ def salary_to_info(data_one, counter_salary, avg_salary):
 
 
 def skill_to_info(data_two, counter_skill, data_skills):
+    """
+    Готовим данные для отчета по требованиям.
+    :param data_two: Полное описание вакансии, полученное по запросу конкретной
+    вакансии (по id).
+    :param counter_skill: Счетчик вакансий, где указаны требования
+    :param data_skills: Список словарей с требованиями: количество упоминаний.
+    :return: Счетчик (int) и список словарей по требованиям.
+    """
+    # TODO добавить анализ 'snippet': '[requirement]
     skills = data_two['key_skills']
     if skills:
         counter_skill += 1
@@ -45,6 +74,15 @@ def skill_to_info(data_two, counter_skill, data_skills):
 
 
 def job_to_pandas(data_one, data_two):
+    """
+    Формирование данных для формирования pandas данных
+    для возможного дальнейшего анализа.
+    :param data_one: Не полное описание вакансии,
+    полученное со страницы с вакансиями.
+    :param data_two: Полное описание вакансии, полученное по запросу конкретной
+    вакансии (по id).
+    :return: Список выборочных данных из вакансии.
+    """
     keys_one = "snippet"
     keys_two = ("id", "alternate_url", "employer", "schedule",
                 "description", "name", "experience", "employment", "salary",

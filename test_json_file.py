@@ -3,10 +3,21 @@ import random
 
 
 def calcul_salary(data):
+    """
+    Проверка наличия данных и выбор величины предлагаемой зарплаты.
+    :param data: данные по зарплате со страницы вакансии - вакансия['salary'].
+    :return: int, величина зарплаты в валюте указанной в вакансии.
+    """
     return data['from'] if data['from'] and data['from'] > 0 else data['to']
 
 
 def format_key_skills(full_data):
+    """
+    Преобразование списка словарей в строку требований через запятую.
+    :param full_data: данные по требованиям
+     со страницы вакансии - вакансия['key_skills'].
+    :return: Строка со списком требований через запятую.
+    """
     return ', '.join(val['name'] for val in full_data['key_skills'])
 
 

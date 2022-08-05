@@ -158,4 +158,18 @@ def send_welcome(message):
                           "сохранит твои слова'")
 
 
+@bot.message_handler(commands=['admin'], func=lambda message: message.from_user.username == 'alfredovich')
+def admin(message):
+    # Дополнительная защита - через пробел вводим пароль
+    # и снова через пробел - команду
+    text_message = message.text.split(' ')
+    if len(text_message) >= 3:
+        if text_message[1] == '123456789':
+            bot.reply_to(message, f'Команда {text_message[2]} принята')
+        else:
+            bot.send_message(message.chat.id, 'Неверный пароль')
+    else:
+        bot.send_message(message.chat.id, 'Неверная команда')
+
+
 bot.polling()
